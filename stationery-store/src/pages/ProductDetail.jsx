@@ -79,20 +79,36 @@ export default function ProductDetail() {
   const product = products[id];
 
   // Google Analytics: Track view_item event when product page loads
+  // Meta Pixel: Track ViewContent event when product page loads
   useEffect(() => {
-    if (product && window.gtag) {
-      window.gtag('event', 'view_item', {
-        currency: 'GBP',
-        value: product.price,
-        items: [{
-          item_id: `SKU_${product.id}`,
-          item_name: product.name,
-          item_brand: 'Salunke & Co.',
-          item_category: 'Stationery',
-          price: product.price,
-          quantity: 1
-        }]
-      });
+    if (product) {
+      // Google Analytics
+      if (window.gtag) {
+        window.gtag('event', 'view_item', {
+          currency: 'GBP',
+          value: product.price,
+          items: [{
+            item_id: `SKU_${product.id}`,
+            item_name: product.name,
+            item_brand: 'Salunke & Co.',
+            item_category: 'Stationery',
+            price: product.price,
+            quantity: 1
+          }]
+        });
+      }
+
+      // Meta Pixel
+      if (window.fbq) {
+        window.fbq('track', 'ViewContent', {
+          content_ids: [`SKU_${product.id}`],
+          content_name: product.name,
+          content_type: 'product',
+          content_category: 'Stationery',
+          value: product.price,
+          currency: 'GBP'
+        });
+      }
     }
   }, [product]);
 
@@ -140,6 +156,17 @@ export default function ProductDetail() {
           price: product.price,
           quantity: quantity
         }]
+      });
+    }
+
+    // Meta Pixel: Track AddToCart event
+    if (window.fbq) {
+      window.fbq('track', 'AddToCart', {
+        content_ids: [`SKU_${product.id}`],
+        content_name: product.name,
+        content_type: 'product',
+        value: product.price * quantity,
+        currency: 'GBP'
       });
     }
 

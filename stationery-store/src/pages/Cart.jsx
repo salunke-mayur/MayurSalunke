@@ -36,11 +36,26 @@ export default function Cart() {
         currency: 'GBP',
         value: total >= 50 ? total : total + 5,
         items: cart.map(item => ({
-          item_id: item.id,
+          item_id: `SKU_${item.id}`,
           item_name: item.name,
           price: item.price,
           quantity: item.quantity
         }))
+      });
+    }
+
+    // Meta Pixel: Track InitiateCheckout event
+    if (window.fbq) {
+      window.fbq('track', 'InitiateCheckout', {
+        content_ids: cart.map(item => `SKU_${item.id}`),
+        contents: cart.map(item => ({
+          id: `SKU_${item.id}`,
+          quantity: item.quantity
+        })),
+        content_type: 'product',
+        num_items: itemCount,
+        value: total >= 50 ? total : total + 5,
+        currency: 'GBP'
       });
     }
 

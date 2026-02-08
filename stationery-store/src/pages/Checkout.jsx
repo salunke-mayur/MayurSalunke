@@ -39,11 +39,26 @@ export default function Checkout() {
         currency: 'GBP',
         value: finalTotal,
         items: cart.map(item => ({
-          item_id: item.id,
+          item_id: `SKU_${item.id}`,
           item_name: item.name,
           price: item.price,
           quantity: item.quantity
         }))
+      });
+    }
+
+    // Meta Pixel: Track Purchase event
+    if (window.fbq) {
+      window.fbq('track', 'Purchase', {
+        content_ids: cart.map(item => `SKU_${item.id}`),
+        contents: cart.map(item => ({
+          id: `SKU_${item.id}`,
+          quantity: item.quantity
+        })),
+        content_type: 'product',
+        num_items: cart.reduce((sum, item) => sum + item.quantity, 0),
+        value: finalTotal,
+        currency: 'GBP'
       });
     }
 
