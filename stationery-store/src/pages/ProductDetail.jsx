@@ -85,9 +85,12 @@ export default function ProductDetail() {
         currency: 'GBP',
         value: product.price,
         items: [{
-          item_id: product.id,
+          item_id: `SKU_${product.id}`,
           item_name: product.name,
-          price: product.price
+          item_brand: 'Salunke & Co.',
+          item_category: 'Stationery',
+          price: product.price,
+          quantity: 1
         }]
       });
     }
@@ -130,8 +133,10 @@ export default function ProductDetail() {
         currency: 'GBP',
         value: product.price * quantity,
         items: [{
-          item_id: product.id,
+          item_id: `SKU_${product.id}`,
           item_name: product.name,
+          item_brand: 'Salunke & Co.',
+          item_category: 'Stationery',
           price: product.price,
           quantity: quantity
         }]
