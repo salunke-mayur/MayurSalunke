@@ -7,7 +7,7 @@ import Checkout from "./pages/Checkout";
 import Success from "./pages/Success";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
-import logo from "./assets/salunke_logo_final.png";
+import logo from "./assets/salunke_logo_final (1).png";
 
 function Header() {
   const { itemCount } = useCart();
